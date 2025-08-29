@@ -1,26 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePlayerPerGameDto } from './dto/create-player_per_game.dto';
 import { UpdatePlayerPerGameDto } from './dto/update-player_per_game.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { PlayerPerGame } from './entities/player_per_game.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class PlayerPerGameService {
-  create(createPlayerPerGameDto: CreatePlayerPerGameDto) {
-    return 'This action adds a new playerPerGame';
-  }
+  constructor(@InjectRepository(PlayerPerGame)
+  private playerPerGameRepository: Repository<PlayerPerGame>,
+  ) {}
 
   findAll() {
-    return `This action returns all playerPerGame`;
+    return this.playerPerGameRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} playerPerGame`;
+    return this.playerPerGameRepository.findOneBy({ id });
   }
 
-  update(id: number, updatePlayerPerGameDto: UpdatePlayerPerGameDto) {
-    return `This action updates a #${id} playerPerGame`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} playerPerGame`;
+  findAllByPlayerId(player_id: string) {
+    return this.playerPerGameRepository.findBy({ player_id });
   }
 }
